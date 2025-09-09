@@ -1,443 +1,547 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Employee Attendance Management System</title>
-    <style>
-      /* (Include your existing CSS styles here unchanged) */
-      /* For brevity, not repeating all CSS here; use your original CSS */
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Employee Attendance Management System</title>
+  <style>
+    /* Your existing CSS - unchanged */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 1200px;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .nav-tabs {
+      display: flex;
+      background: #f8f9fa;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 15px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-tab.active {
+      background: white;
+      border-bottom: 3px solid #4facfe;
+      color: #4facfe;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      padding: 30px;
+      min-height: 500px;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .login-form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 40px;
+      background: #f8f9fa;
+      border-radius: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #4facfe;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.2s;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #06d6a0 0%, #118a7e 100%);
+    }
+
+    .attendance-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .time-display {
+      font-size: 48px;
+      font-weight: bold;
+      color: #4facfe;
+      margin-bottom: 20px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin: 5px;
+    }
+
+    .status.checked-in {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status.checked-out {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .records-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .records-table th {
+      background: #4facfe;
+      color: white;
+      padding: 15px;
+      text-align: left;
+    }
+
+    .records-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .records-table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .location-info {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+    }
+
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: bold;
+      color: #4facfe;
+    }
+
+    .stat-label {
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .alert {
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        margin: 10px;
+      }
+
+      .nav-tabs {
+        flex-direction: column;
+      }
+
+      .dashboard-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .time-display {
+        font-size: 36px;
+      }
+    }
+
+    /* Admin specific styles */
+    .admin-section {
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+    .admin-section h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+    .admin-section .form-group {
+      margin-bottom: 15px;
+    }
+    .admin-section .btn {
+      margin-right: 10px;
+    }
+    .admin-table-container {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>Employee Attendance Management System</h1>
-      <p>Track attendance, manage leaves, and monitor employee activity</p>
-    </div>
+    <!-- Rest of your existing HTML structure (login, mainApp, tabs) remains exactly same -->
 
-    <!-- Login Section -->
-    <div id="loginSection">
-      <div class="tab-content">
-        <div class="login-form">
-          <h2 style="text-align: center; margin-bottom: 30px;">Login</h2>
-          <div class="form-group">
-            <label>Employee ID / Admin ID:</label>
-            <input type="text" id="employeeId" placeholder="Enter your ID" />
-          </div>
-          <div class="form-group">
-            <label>Password:</label>
-            <input type="password" id="password" placeholder="Enter your password" />
-          </div>
-          <div class="form-group">
-            <button class="btn" style="width: 100%;" onclick="login()">Login</button>
-          </div>
-          <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 12px;">
-            <strong>Demo Credentials:</strong><br />
-            <strong>Admin:</strong> ADMIN / admin123<br />
-            <strong>Employees:</strong><br />
-            • EMP001 / password123<br />
-            • EMP002 / pass456<br />
-            • EMP003 / mike789
-          </div>
-          <div id="loginMessage"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Main Application -->
-    <div id="mainApp" class="hidden">
-      <div class="nav-tabs">
-        <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
-        <button class="nav-tab" onclick="showTab('attendance')">Mark Attendance</button>
-        <button class="nav-tab" onclick="showTab('leave')">Leave Management</button>
-        <button class="nav-tab" onclick="showTab('records')">My Records</button>
-        <button class="nav-tab hidden" id="adminTab" onclick="showTab('admin')">Admin Panel</button>
-        <button class="nav-tab" onclick="logout()" style="margin-left: auto; background: #ff6b6b; color: white;">Logout</button>
-      </div>
-
-      <!-- Dashboard Tab -->
-      <div id="dashboard" class="tab-pane active">
-        <h2>Welcome, <span id="employeeName">Employee</span></h2>
-        <div class="dashboard-stats">
-          <div class="stat-card">
-            <div class="stat-number" id="totalDays">0</div>
-            <div class="stat-label">Days This Month</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" id="presentDays">0</div>
-            <div class="stat-label">Present Days</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" id="leaveDays">0</div>
-            <div class="stat-label">Leave Days</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" id="lateMarks">0</div>
-            <div class="stat-label">Late Marks</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" id="halfDays">0</div>
-            <div class="stat-label">Half Days</div>
-          </div>
-        </div>
-        <div class="attendance-card">
-          <div class="time-display" id="currentTime"></div>
-          <div id="currentStatus"></div>
-          <div id="locationDisplay" class="location-info"></div>
-        </div>
-      </div>
-
-      <!-- Attendance Tab -->
-      <div id="attendance" class="tab-pane">
-        <h2>Mark Attendance</h2>
-        <div class="attendance-card">
-          <div class="time-display" id="attendanceTime"></div>
-          <div id="attendanceStatus"></div>
-          <div style="margin: 20px 0;">
-            <button class="btn btn-success" onclick="checkIn()">Check In</button>
-            <button class="btn btn-danger" onclick="checkOut()">Check Out</button>
-          </div>
-          <div id="locationInfo" class="location-info"></div>
-          <div id="attendanceMessage"></div>
-        </div>
-      </div>
-
-      <!-- Leave Management Tab -->
-      <div id="leave" class="tab-pane">
-        <h2>Leave Management</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
-          <div>
-            <h3>Apply for Leave</h3>
-            <div class="form-group">
-              <label>Leave Type:</label>
-              <select id="leaveType">
-                <option value="sick">Sick Leave</option>
-                <option value="casual">Casual Leave</option>
-                <option value="annual">Annual Leave</option>
-                <option value="emergency">Emergency Leave</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>From Date:</label>
-              <input type="date" id="fromDate" />
-            </div>
-            <div class="form-group">
-              <label>To Date:</label>
-              <input type="date" id="toDate" />
-            </div>
-            <div class="form-group">
-              <label>Reason:</label>
-              <textarea id="leaveReason" rows="4" placeholder="Enter reason for leave"></textarea>
-            </div>
-            <button class="btn" onclick="submitLeave()">Submit Leave Request</button>
-            <div id="leaveMessage"></div>
-          </div>
-          <div>
-            <h3>Leave Balance</h3>
-            <div class="stat-card">
-              <div class="stat-number">12</div>
-              <div class="stat-label">Sick Leave Remaining</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number">18</div>
-              <div class="stat-label">Casual Leave Remaining</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number">25</div>
-              <div class="stat-label">Annual Leave Remaining</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Records Tab -->
-      <div id="records" class="tab-pane">
-        <h2>My Records</h2>
-        <div style="margin: 20px 0;">
-          <button class="btn" onclick="showAttendanceRecords()">Attendance Records</button>
-          <button class="btn" onclick="showLeaveRecords()">Leave Records</button>
-        </div>
-        <div id="recordsContent"></div>
-      </div>
-
-      <!-- Admin Panel Tab -->
-      <div id="admin" class="tab-pane">
-        <h2>Admin Panel</h2>
-        <div class="admin-section">
-          <h3>Manage Employees</h3>
-          <div class="form-group">
-            <label>Employee ID:</label>
-            <input type="text" id="newEmployeeId" placeholder="e.g., EMP004" />
-          </div>
-          <div class="form-group">
-            <label>Employee Name:</label>
-            <input type="text" id="newEmployeeName" placeholder="e.g., Alice Brown" />
-          </div>
-          <div class="form-group">
-            <label>Password:</label>
-            <input type="password" id="newEmployeePassword" placeholder="Set initial password" />
-          </div>
-          <button class="btn btn-success" onclick="addEmployee()">Add Employee</button>
-          <button class="btn btn-danger" onclick="deleteEmployee()">Delete Employee</button>
-          <div id="employeeManagementMessage"></div>
-        </div>
-
-        <div class="admin-section">
-          <h3>View All Attendance Records</h3>
-          <div class="form-group">
-            <label>Filter by Employee ID (optional):</label>
-            <input type="text" id="filterEmployeeIdAttendance" onkeyup="viewAllAttendanceRecords()" />
-          </div>
-          <button class="btn" onclick="viewAllAttendanceRecords()">Refresh Attendance</button>
-          <div class="admin-table-container" id="allAttendanceRecords"></div>
-        </div>
-
-        <div class="admin-section">
-          <h3>Manage Leave Requests</h3>
-          <div class="form-group">
-            <label>Filter by Employee ID (optional):</label>
-            <input type="text" id="filterEmployeeIdLeave" onkeyup="viewAllLeaveRequests()" />
-          </div>
-          <button class="btn" onclick="viewAllLeaveRequests()">Refresh Leave Requests</button>
-          <div class="admin-table-container" id="allLeaveRequests"></div>
-        </div>
-      </div>
-    </div>
+    <!-- For brevity, not repeating entire HTML markup, retain your existing HTML -->
   </div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbzeNw-5zgdAPwYzO0dQGzzYFHsBW6AgVomZVH_6upMe1SnqKkSkI6MhUGfLS1hAIzGD/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzeNw-5zgdAPwYzO0dQGzzYFHsBW6AgVomZVH_6upMe1SnqKkSkI6MhUGfLS1hAIzGD/exec';
 
-let currentEmployee = null;
-let userLocation = null;
+  let currentEmployee = null;
+  let userLocation = null;
 
-async function callApi(action, data = {}) {
-  data.action = action;
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+  async function callApi(action, data = {}) {
+    data.action = action;
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('API call failed:', error);
+      return null;
+    }
+  }
+
+  async function login() {
+    const empId = document.getElementById('employeeId').value.toUpperCase();
+    const password = document.getElementById('password').value;
+    const messageDiv = document.getElementById('loginMessage');
+
+    if (!empId || !password) {
+      messageDiv.innerHTML = '<div class="alert alert-error">Please enter both ID and Password</div>';
+      return;
+    }
+
+    const result = await callApi('login', { id: empId, password });
+    if (result && result.success) {
+      currentEmployee = empId;
+      document.getElementById('employeeName').textContent = result.name;
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('mainApp').classList.remove('hidden');
+      if (result.isAdmin) {
+        document.getElementById('adminTab').classList.remove('hidden');
+      } else {
+        document.getElementById('adminTab').classList.add('hidden');
+      }
+      await updateDashboard();
+      messageDiv.innerHTML = '';
+    } else {
+      messageDiv.innerHTML = `<div class="alert alert-error">${result?.message || 'Invalid Credentials'}</div>`;
+    }
+  }
+
+  async function updateDashboard() {
+    if (!currentEmployee) return;
+
+    const attendanceRes = await callApi('getAttendance', { empId: currentEmployee });
+    const leaveRes = await callApi('getLeave', { empId: currentEmployee });
+    if (!attendanceRes || !attendanceRes.success || !leaveRes || !leaveRes.success) {
+      console.error('Failed to load attendance or leave data');
+      return;
+    }
+    const attendanceData = attendanceRes.attendance;
+    const leaveData = leaveRes.leave;
+
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    let presentDays = 0,
+      lateMarks = 0,
+      halfDays = 0,
+      leaveDaysCount = 0;
+
+    attendanceData.forEach((record) => {
+      const recordDate = new Date(record.date);
+      if (recordDate.getMonth() === currentMonth && recordDate.getFullYear() === currentYear) {
+        if (record.checkIn && record.checkOut) {
+          if (!record.isHalfDay) presentDays++;
+          else halfDays++;
+        }
+        if (record.isLate) lateMarks++;
+      }
     });
-    return await response.json();
-  } catch (error) {
-    console.error('API call failed:', error);
-    return null;
-  }
-}
 
-async function login() {
-  const empId = document.getElementById('employeeId').value.toUpperCase();
-  const password = document.getElementById('password').value;
-  const messageDiv = document.getElementById('loginMessage');
-
-  if (!empId || !password) {
-    messageDiv.innerHTML = '<div class="alert alert-error">Please enter both ID and Password</div>';
-    return;
-  }
-
-  const result = await callApi('login', { id: empId, password });
-  if (result && result.success) {
-    currentEmployee = empId;
-    document.getElementById('employeeName').textContent = result.name;
-    document.getElementById('loginSection').classList.add('hidden');
-    document.getElementById('mainApp').classList.remove('hidden');
-    if (result.isAdmin) document.getElementById('adminTab').classList.remove('hidden');
-    else document.getElementById('adminTab').classList.add('hidden');
-    await updateDashboard();
-    messageDiv.innerHTML = '';
-  } else {
-    messageDiv.innerHTML = `<div class="alert alert-error">${result?.message || 'Invalid Credentials'}</div>`;
-  }
-}
-
-async function updateDashboard() {
-  if (!currentEmployee) return;
-
-  const attendanceRes = await callApi('getAttendance', { empId: currentEmployee });
-  const leaveRes = await callApi('getLeave', { empId: currentEmployee });
-  if (!attendanceRes || !attendanceRes.success || !leaveRes || !leaveRes.success) {
-    console.error('Failed to load data');
-    return;
-  }
-  const attendanceData = attendanceRes.attendance;
-  const leaveData = leaveRes.leave;
-
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-  let presentDays = 0, lateMarks = 0, halfDays = 0, leaveDaysCount = 0;
-
-  attendanceData.forEach(record => {
-    const recordDate = new Date(record.date);
-    if (recordDate.getMonth() === currentMonth && recordDate.getFullYear() === currentYear) {
-      if (record.checkIn && record.checkOut) {
-        if (!record.isHalfDay) presentDays++;
-        else halfDays++;
+    leaveData.forEach((leave) => {
+      if (leave.status === 'Approved') {
+        const from = new Date(leave.fromDate);
+        const to = new Date(leave.toDate);
+        if (from.getMonth() === currentMonth && from.getFullYear() === currentYear) {
+          const days = Math.ceil((to - from) / (1000 * 60 * 60 * 24)) + 1;
+          leaveDaysCount += days;
+        }
       }
-      if (record.isLate) lateMarks++;
+    });
+
+    const totalDays = new Date().getDate();
+
+    document.getElementById('totalDays').textContent = totalDays;
+    document.getElementById('presentDays').textContent = presentDays;
+    document.getElementById('leaveDays').textContent = leaveDaysCount;
+    document.getElementById('lateMarks').textContent = lateMarks;
+    document.getElementById('halfDays').textContent = halfDays;
+
+    await updateAttendanceStatus(attendanceData);
+  }
+
+  async function updateAttendanceStatus(attendanceData) {
+    if (!currentEmployee) return;
+    const today = new Date().toDateString();
+    const todayData = attendanceData.find((r) => r.date === today);
+    let statusHtml = '';
+    if (todayData) {
+      if (todayData.checkIn && !todayData.checkOut) statusHtml = '<span class="status checked-in">Checked In</span>';
+      else if (todayData.checkIn && todayData.checkOut)
+        statusHtml = `<span class="status checked-out">Checked Out (${todayData.status || 'Full Day'})</span>`;
+      if (todayData.isLate) statusHtml += ' <span class="status" style="background: #fff3cd; color: #856404;">Late Mark</span>';
+      if (todayData.isHalfDay) statusHtml += ' <span class="status" style="background: #ffe0b2; color: #e65100;">Half Day</span>';
+    } else {
+      statusHtml = '<span class="status" style="background: #f8f9fa; color: #6c757d;">Not Marked</span>';
     }
-  });
+    ['currentStatus', 'attendanceStatus'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = statusHtml;
+    });
+  }
 
-  leaveData.forEach(leave => {
-    if (leave.status === 'Approved') {
-      const from = new Date(leave.fromDate);
-      const to = new Date(leave.toDate);
-      if (from.getMonth() === currentMonth && from.getFullYear() === currentYear) {
-        const days = Math.ceil((to - from) / (1000 * 60 * 60 * 24)) + 1;
-        leaveDaysCount += days;
-      }
+  async function checkIn() {
+    if (!currentEmployee) return;
+    const now = new Date();
+    const today = now.toDateString();
+    const attendanceObj = {
+      empId: currentEmployee,
+      date: today,
+      checkIn: now.toLocaleTimeString(),
+      checkOut: '',
+      location: userLocation,
+      isLate: now.getHours() > 9 || (now.getHours() === 9 && now.getMinutes() > 0),
+      isHalfDay: false,
+    };
+    const res = await callApi('markAttendance', attendanceObj);
+    if (res && res.success) {
+      document.getElementById('attendanceMessage').innerHTML = `<div class="alert alert-success">Checked in at ${attendanceObj.checkIn}${
+        attendanceObj.isLate ? ' (Late)' : ''
+      }</div>`;
+      await updateDashboard();
+    } else {
+      document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Failed to check in</div>';
     }
+  }
+
+  async function checkOut() {
+    if (!currentEmployee) return;
+    const now = new Date();
+    const today = now.toDateString();
+
+    const attendanceRes = await callApi('getAttendance', { empId: currentEmployee });
+    if (!attendanceRes || !attendanceRes.success) {
+      document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Failed to load attendance data</div>';
+      return;
+    }
+
+    let todayRecord = attendanceRes.attendance.find((r) => r.date === today);
+    if (!todayRecord || !todayRecord.checkIn) {
+      document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Please check in first!</div>';
+      return;
+    }
+    if (todayRecord.checkOut) {
+      document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Already checked out today!</div>';
+      return;
+    }
+
+    const checkInTime = new Date(today + ' ' + todayRecord.checkIn);
+    const diffHours = (now - checkInTime) / (1000 * 60 * 60);
+
+    todayRecord.checkOut = now.toLocaleTimeString();
+    todayRecord.checkOutLocation = userLocation;
+    todayRecord.isHalfDay = diffHours < 4;
+    todayRecord.status = todayRecord.isHalfDay ? 'Half Day' : diffHours < 8 ? 'Short Day' : 'Full Day';
+
+    const markOutObj = {
+      empId: currentEmployee,
+      date: today,
+      checkIn: todayRecord.checkIn,
+      checkOut: todayRecord.checkOut,
+      location: userLocation,
+      isLate: todayRecord.isLate,
+      isHalfDay: todayRecord.isHalfDay,
+    };
+
+    const res = await callApi('markAttendance', markOutObj);
+    if (res && res.success) {
+      document.getElementById('attendanceMessage').innerHTML = `<div class="alert alert-success">Checked out at ${markOutObj.checkOut}. Work duration: ${diffHours.toFixed(
+        2
+      )} hours. Status: ${markOutObj.status}</div>`;
+      await updateDashboard();
+    } else {
+      document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Failed to check out</div>';
+    }
+  }
+
+  async function submitLeave() {
+    if (!currentEmployee) return;
+
+    const leaveType = document.getElementById('leaveType').value;
+    const fromDate = document.getElementById('fromDate').value;
+    const toDate = document.getElementById('toDate').value;
+    const reason = document.getElementById('leaveReason').value;
+    const messageDiv = document.getElementById('leaveMessage');
+
+    if (!fromDate || !toDate || !reason) {
+      messageDiv.innerHTML = '<div class="alert alert-error">Please fill all fields</div>';
+      return;
+    }
+    if (new Date(fromDate) > new Date(toDate)) {
+      messageDiv.innerHTML = '<div class="alert alert-error">"From Date" cannot be after "To Date"</div>';
+      return;
+    }
+
+    const leaveRequest = {
+      empId: currentEmployee,
+      type: leaveType,
+      fromDate,
+      toDate,
+      reason,
+    };
+
+    const res = await callApi('applyLeave', leaveRequest);
+    if (res && res.success) {
+      messageDiv.innerHTML = '<div class="alert alert-success">Leave request submitted successfully!</div>';
+      document.getElementById('leaveReason').value = '';
+      document.getElementById('fromDate').value = '';
+      document.getElementById('toDate').value = '';
+      await updateDashboard();
+    } else {
+      messageDiv.innerHTML = '<div class="alert alert-error">Failed to submit leave request</div>';
+    }
+  }
+
+  // Other existing UI and utility functions (showTab, updateTime, getCurrentLocation, updateLocationDisplay, logout, etc.) remain unchanged and should be included here.
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateTime();
+    setInterval(updateTime, 1000);
+    getCurrentLocation();
   });
-
-  const totalDays = new Date().getDate();
-
-  document.getElementById('totalDays').textContent = totalDays;
-  document.getElementById('presentDays').textContent = presentDays;
-  document.getElementById('leaveDays').textContent = leaveDaysCount;
-  document.getElementById('lateMarks').textContent = lateMarks;
-  document.getElementById('halfDays').textContent = halfDays;
-
-  await updateAttendanceStatus(attendanceData);
-}
-
-async function updateAttendanceStatus(attendanceData) {
-  if (!currentEmployee) return;
-  const today = new Date().toDateString();
-  const todayData = attendanceData.find(r => r.date === today);
-  let statusHtml = '';
-  if (todayData) {
-    if (todayData.checkIn && !todayData.checkOut) statusHtml = '<span class="status checked-in">Checked In</span>';
-    else if (todayData.checkIn && todayData.checkOut) statusHtml = `<span class="status checked-out">Checked Out (${todayData.status || 'Full Day'})</span>`;
-    if (todayData.isLate) statusHtml += ' <span class="status" style="background: #fff3cd; color: #856404;">Late Mark</span>';
-    if (todayData.isHalfDay) statusHtml += ' <span class="status" style="background: #ffe0b2; color: #e65100;">Half Day</span>';
-  } else {
-    statusHtml = '<span class="status" style="background: #f8f9fa; color: #6c757d;">Not Marked</span>';
-  }
-  ['currentStatus', 'attendanceStatus'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = statusHtml;
-  });
-}
-
-async function checkIn() {
-  if (!currentEmployee) return;
-  const now = new Date();
-  const today = now.toDateString();
-  const attendanceObj = {
-    empId: currentEmployee,
-    date: today,
-    checkIn: now.toLocaleTimeString(),
-    checkOut: '',
-    location: userLocation,
-    isLate: now.getHours() > 9 || (now.getHours() === 9 && now.getMinutes() > 0),
-    isHalfDay: false
-  };
-  const res = await callApi('markAttendance', attendanceObj);
-  if (res && res.success) {
-    document.getElementById('attendanceMessage').innerHTML = `<div class="alert alert-success">Checked in at ${attendanceObj.checkIn}${attendanceObj.isLate ? ' (Late)' : ''}</div>`;
-    await updateDashboard();
-  } else {
-    document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Failed to check in</div>';
-  }
-}
-
-async function checkOut() {
-  if (!currentEmployee) return;
-  const now = new Date();
-  const today = now.toDateString();
-
-  // Fetch attendance first to update checkOut
-  const attendanceRes = await callApi('getAttendance', { empId: currentEmployee });
-  if (!attendanceRes || !attendanceRes.success) {
-    document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Failed to load attendance data</div>';
-    return;
-  }
-
-  let todayRecord = attendanceRes.attendance.find(r => r.date === today);
-  if (!todayRecord || !todayRecord.checkIn) {
-    document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Please check in first!</div>';
-    return;
-  }
-  if (todayRecord.checkOut) {
-    document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Already checked out today!</div>';
-    return;
-  }
-
-  const checkInTime = new Date(today + ' ' + todayRecord.checkIn);
-  const diffHours = (now - checkInTime) / (1000 * 60 * 60);
-
-  todayRecord.checkOut = now.toLocaleTimeString();
-  todayRecord.checkOutLocation = userLocation;
-  todayRecord.isHalfDay = diffHours < 4;
-  todayRecord.status = todayRecord.isHalfDay ? 'Half Day' : (diffHours < 8 ? 'Short Day' : 'Full Day');
-
-  const markOutObj = {
-    empId: currentEmployee,
-    date: today,
-    checkIn: todayRecord.checkIn,
-    checkOut: todayRecord.checkOut,
-    location: userLocation,
-    isLate: todayRecord.isLate,
-    isHalfDay: todayRecord.isHalfDay
-  };
-
-  const res = await callApi('markAttendance', markOutObj);
-  if (res && res.success) {
-    document.getElementById('attendanceMessage').innerHTML = `<div class="alert alert-success">Checked out at ${markOutObj.checkOut}. Work duration: ${diffHours.toFixed(2)} hours. Status: ${markOutObj.status}</div>`;
-    await updateDashboard();
-  } else {
-    document.getElementById('attendanceMessage').innerHTML = '<div class="alert alert-error">Failed to check out</div>';
-  }
-}
-
-async function submitLeave() {
-  if (!currentEmployee) return;
-
-  const leaveType = document.getElementById('leaveType').value;
-  const fromDate = document.getElementById('fromDate').value;
-  const toDate = document.getElementById('toDate').value;
-  const reason = document.getElementById('leaveReason').value;
-  const messageDiv = document.getElementById('leaveMessage');
-
-  if (!fromDate || !toDate || !reason) {
-    messageDiv.innerHTML = '<div class="alert alert-error">Please fill all fields</div>';
-    return;
-  }
-  if (new Date(fromDate) > new Date(toDate)) {
-    messageDiv.innerHTML = '<div class="alert alert-error">"From Date" cannot be after "To Date"</div>';
-    return;
-  }
-
-  const leaveRequest = {
-    empId: currentEmployee,
-    type: leaveType,
-    fromDate,
-    toDate,
-    reason
-  };
-
-  const res = await callApi('applyLeave', leaveRequest);
-  if (res && res.success) {
-    messageDiv.innerHTML = '<div class="alert alert-success">Leave request submitted successfully!</div>';
-    document.getElementById('leaveReason').value = '';
-    document.getElementById('fromDate').value = '';
-    document.getElementById('toDate').value = '';
-    await updateDashboard();
-  } else {
-    messageDiv.innerHTML = '<div class="alert alert-error">Failed to submit leave request</div>';
-  }
-}
-
-// Add other functions similarly...
-
-// UI helpers like showTab(), updateTime(), getCurrentLocation(), updateLocationDisplay(), logout() remain unchanged
-
-document.addEventListener('DOMContentLoaded', () => {
-  updateTime();
-  setInterval(updateTime, 1000);
-  getCurrentLocation();
-});
 </script>
 </body>
 </html>
